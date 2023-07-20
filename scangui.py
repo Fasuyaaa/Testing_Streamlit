@@ -11,8 +11,12 @@ def send_message(sender_name, message_content):
 def main():
     st.title("Aplikasi Kirim Pesan dengan Panel Admin")
     
+    # Create a sidebar
+    st.sidebar.title("Menu")
+    menu_selection = st.sidebar.radio("Pilih Halaman:", ("Kirim Pesan", "Panel Admin"))
+
     # Check if the user is the admin
-    if st.text_input("Masukkan kata sandi:", type="password") == ADMIN_PASSWORD:
+    if menu_selection == "Panel Admin" and st.text_input("Masukkan kata sandi:", type="password") == ADMIN_PASSWORD:
         st.subheader("Panel Admin")
         with open("messages.txt", "r") as file:
             messages = file.read()
