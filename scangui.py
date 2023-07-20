@@ -1,47 +1,38 @@
 import streamlit as st
-import nmap
+import smtplib
+from email.message import EmailMessage
+
+def send_email(sender_name, message_content):
+    # Replace the following variables with your email account details
+    email_address = "your_email@gmail.com"
+    email_password = "your_email_password"
+
+    msg = EmailMessage()
+    msg["Subject"] = "Pesan dari Aplikasi Streamlit"
+    msg["From"] = email_address
+    msg["To"] = "dhavinf.a@gmail.com"
+    msg.set_content(f"{sender_name} mengirim pesan: \n\n{message_content}")
+
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(email_address, email_password)
+            server.send_message(msg)
+        st.success("Pesan berhasil dikirim!")
+    except Exception as e:
+        st.error(f"Terjadi kesalahan saat mengirim email: {str(e)}")
 
 def main():
-    st.title("NMAP SCAN NETWORK")
-    nmap_version = nmap.__version__
-    st.write(nmap_version)
+    st.title("Aplikasi Kirim Pesan")
+    st.write("Isi form di bawah ini untuk mengirim pesan.")
 
-    selected_option = st.selectbox("Select an option", ["Command list", "Scanning port"])
-    if st.button("Try"):
-        st.write("You selected:", selected_option)
-        if selected_option == "Command list":
-            function_option1()
-        elif selected_option == "Scanning port":
-            function_option2()
+    sender_name = st.text_input("Nama Pengirim:")
+    message_content = st.text_area("Isi Pesan:")
+
+    if st.button("Kirim Pesan"):
+        if sender_name and message_content:
+            send_email(sender_name, message_content)
         else:
-            st.write("Invalid option")
-
-def function_option1():
-    st.subheader("Command Line")
-
-def function_option2():
-    st.subheader("Scanning Port")
-    host = st.text_input("Type Target: ")
-    start_port = st.number_input("Start Port (e.g: 0)", min_value=0, max_value=65535, value=0)
-    end_port = st.number_input("End Port (e.g: 300)", min_value=0, max_value=65535, value=300)
-
-    if st.button("Scan"):
-        progress_bar = st.progress(0)  # Menambahkan progress bar
-        output_area = st.empty()  # Membuat area kosong untuk output
-        port_range = f"{start_port}-{end_port}"
-        net = nmap.PortScanner()
-        net.scan(host, port_range)
-        count = 1
-        for host in net.all_hosts():
-            hitungan = str(count)
-            output_area.subheader("Host %s" % hitungan)
-            output_area.write("Host         : %s (%s)" % (host, net[host].hostname()))
-            output_area.write("State        : %s" % net[host].state())
-            count += 1
-            progress_bar.progress(count / len(net.all_hosts()) * 100)  # Mengupdate progress bar
-
-def function_option3():
-    st.write("Function for Option 3")
+            st.warning("Mohon isi nama pengirim dan isi pesan terlebih dahulu.")
 
 if __name__ == "__main__":
     main()
