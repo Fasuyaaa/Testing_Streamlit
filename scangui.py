@@ -1,12 +1,9 @@
 import streamlit as st
 import nmap
 
-nmap_path = [r"C:\Users\Administrator\LINUX WINDOWS APPS\Nmap\nmap.exe"]
-net = nmap.PortScanner(nmap_search_path=nmap_path)
-
 def main():
     st.title("NMAP SCAN NETWORK")
-    nmap_version = (nmap.__version__)
+    nmap_version = nmap.__version__
     st.write(nmap_version)
 
     selected_option = st.selectbox("Select an option", ["Command list", "Scanning port"])
@@ -32,6 +29,7 @@ def function_option2():
         progress_bar = st.progress(0)  # Menambahkan progress bar
         output_area = st.empty()  # Membuat area kosong untuk output
         port_range = f"{start_port}-{end_port}"
+        net = nmap.PortScanner()
         net.scan(host, port_range)
         count = 1
         for host in net.all_hosts():
