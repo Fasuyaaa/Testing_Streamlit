@@ -1,12 +1,22 @@
 import streamlit as st
+import base64
+import bcrypt
 
-# Panel admin password
-ADMIN_PASSWORD = "123"
+ADMIN_PASSWORD_ENCODED = b'MTIz'  
 
-# Function to send a message to the admin panel
-def send_message(sender_name, message_content):
-    with open("messages.txt", "a") as file:
-        file.write(f"{sender_name}: {message_content}\n")
+# Function untuk mendecode password admin
+def decode_password(encoded_password):
+    return base64.b64decode(encoded_password).decode()
+
+# Function untuk mengenkripsi password
+def hash_password(password):
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode(), salt)
+    return hashed_password
+
+# Function untuk memverifikasi password
+def verify_password(plain_password, hashed_password):
+    return bcrypt.checkpw(plain_password.encode(), hashed_password)
 
 def main():
     st.title("Aplikasi Kirim Pesan dengan Panel Admin")
@@ -18,7 +28,7 @@ def main():
     if menu_selection == "Panel Admin":
         # Check if the user is the admin
         password_input = st.text_input("Masukkan kata sandi:", type="password")
-        if password_input == ADMIN_PASSWORD:
+        if verify_password(password_input, hash_admin_password):
             st.subheader("Panel Admin")
             with open("messages.txt", "r") as file:
                 messages = file.read()
@@ -38,4 +48,6 @@ def main():
                 st.warning("Mohon isi nama pengirim dan isi pesan terlebih dahulu.")
 
 if __name__ == "__main__":
+    ADMIN_PASSWORD = decode_password(ADMIN_PASSWORD_ENCODED)
+    hash_admin_password = hash_password(ADMIN_PASSWORD)
     main()
