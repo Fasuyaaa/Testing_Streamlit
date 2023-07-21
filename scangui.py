@@ -17,7 +17,7 @@ def main():
 
     if menu_selection == "Panel Admin":
         # Check if the user is the admin
-        password_input = st.sidebar.text_input("Masukkan kata sandi:", type="password")
+        password_input = st.text_input("Masukkan kata sandi:", type="password")
         if password_input == ADMIN_PASSWORD:
             st.subheader("Panel Admin")
             with open("messages.txt", "r") as file:
