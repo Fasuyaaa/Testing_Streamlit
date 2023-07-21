@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Panel admin password
-ADMIN_PASSWORD = "123"
+ADMIN_PASSWORD = "120407"
 
 # Function to send a message to the admin panel
 def send_message(sender_name, message_content):
@@ -20,6 +20,8 @@ def main():
         with open("messages.txt", "r") as file:
             messages = file.read()
         st.text_area("Pesan yang Dikirim", messages, height=200)
+    elif menu_selection == "Panel Admin" and st.text_input("Masukkan kata sandi:", type="password") != ADMIN_PASSWORD:
+        st.warning("Password Salah")
     elif menu_selection == "Kirim Pesan":
         st.subheader("Kirim Pesan")
         sender_name = st.text_input("Nama Pengirim:")
