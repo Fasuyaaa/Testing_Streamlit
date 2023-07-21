@@ -20,6 +20,7 @@ def main():
         with open("messages.txt", "r") as file:
             messages = file.read()
         st.text_area("Pesan yang Dikirim", messages, height=200)
+        st.snow()
     elif menu_selection == "Kirim Pesan":
         st.subheader("Kirim Pesan")
         sender_name = st.text_input("Nama Pengirim:")
