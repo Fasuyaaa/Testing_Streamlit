@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Panel admin password
-ADMIN_PASSWORD = "123"
+ADMIN_PASSWORD = "120407"
 
 # Function to send a message to the admin panel
 def send_message(sender_name, message_content):
@@ -9,7 +9,7 @@ def send_message(sender_name, message_content):
         file.write(f"{sender_name}: {message_content}\n")
 
 def main():
-    st.title("Aplikasi Kirim Pesan dengan Panel Admin")
+    st.title("Test Web Python")
     
     # Create a sidebar
     st.sidebar.title("Menu")
@@ -22,7 +22,7 @@ def main():
         st.text_area("Pesan yang Dikirim", messages, height=200)
     elif menu_selection == "Kirim Pesan":
         st.subheader("Kirim Pesan")
-        sender_name = st.text_input("Nama Pengirim:")
+        sender_name = st.text_input("Nama Pengirim (samaran juga gapapa):")
         message_content = st.text_area("Isi Pesan:")
 
         if st.button("Kirim Pesan"):
